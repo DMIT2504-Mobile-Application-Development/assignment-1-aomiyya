@@ -4,7 +4,7 @@ class CurrentWeather {
   late double _currentTemp;
   late DateTime _currentTime;
   late DateTime _sunrise;
-  late DateTime _sunset;
+  late DateTime _sunset = DateTime(3000);
 
   // Constructors
   CurrentWeather({required String city, required String description, required double currentTemp, required DateTime currentTime, required DateTime sunrise, required DateTime sunset}) {
@@ -21,9 +21,9 @@ class CurrentWeather {
         city: data['name'],
         description: data['weather'][0]['description'],
         currentTemp: data['main']['temp'],
-        currentTime: DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000),
-        sunrise: DateTime.fromMillisecondsSinceEpoch(data['sys']['sunrise'] * 1000),
-        sunset: DateTime.fromMillisecondsSinceEpoch(data['sys']['sunset'] * 1000));
+        currentTime: DateTime.fromMillisecondsSinceEpoch(data['dt'].toInt() * 1000),
+        sunrise: DateTime.fromMillisecondsSinceEpoch(data['sys']['sunrise'].toInt() * 1000),
+        sunset: DateTime.fromMillisecondsSinceEpoch(data['sys']['sunset'].toInt() * 1000));
   }
 
   // Properties
@@ -84,9 +84,9 @@ class CurrentWeather {
       throw Exception('Sunrise must be on the same day as current time');
     }
 
-    // if (value.isAfter(_sunset)) {
-    //   throw Exception('Sunrise cannot be after sunset');
-    // }
+    if (value.isAfter(_sunset)) {
+      throw Exception('Sunrise cannot be after sunset');
+    }
 
     _sunrise = value;
   }
@@ -100,9 +100,9 @@ class CurrentWeather {
       throw Exception('Sunset must be on the same day as current time');
     }
 
-    // if (value.isBefore(_sunrise)) {
-    //   throw Exception('Sunset cannot be before sunrise');
-    // }
+    if (value.isBefore(_sunrise)) {
+      throw Exception('Sunset cannot be before sunrise');
+    }
 
     _sunset = value;
   }
